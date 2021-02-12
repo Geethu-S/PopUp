@@ -1,0 +1,15 @@
+h2{
+    border: 1px solid #e6ffff;
+    background-color:#e6ffff;
+    padding-top: 5px;
+    padding-right: 40px;
+    padding-bottom: 5px;
+    padding-left: 40px;
+   
+  }
+  .slds-modal__container{
+    width: 80% !important;
+    max-width: 80rem!important;
+  }
+
+ 
