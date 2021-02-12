@@ -10,6 +10,7 @@ h2{
   .slds-modal__container{
     width: 80% !important;
     max-width: 80rem!important;
+      height:800px;
   }
 
  
