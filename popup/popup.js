@@ -1,33 +1,24 @@
-import { LightningElement,api } from 'lwc';
-import PROJECT_NAME__C_FIELD from '@salesforce/schema/Project__c.Name';
-import PROJECTTYPE__C_FIELD from '@salesforce/schema/Project__c.projecttype__c';
-import OWNER__C_FIELD from '@salesforce/schema/Project__c.owner__c';
-import END_DATE__C_FIELD from '@salesforce/schema/Project__c.end_date__c';
-import STATUS__C_FIELD from '@salesforce/schema/Project__c.status__c';
-import PRIORITY__C_FIELD from '@salesforce/schema/Project__c.priority__c';
-import PROJECT__C_OBJECT from '@salesforce/schema/Project__c';
-
-export default class Popup extends LightningElement {
+import { LightningElement , track ,api} from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+export default class Model extends LightningElement {
+    @track customFormModal = false;
     @api recordId;
-    objectName= PROJECT__C_OBJECT;
-    objectFields=[PROJECT_NAME__C_FIELD,PROJECTTYPE__C_FIELD,OWNER__C_FIELD,END_DATE__C_FIELD,STATUS__C_FIELD,PRIORITY__C_FIELD];
-
+    @api myRecordId;
+    redirect = true;
+    resetpage = true;
+ @api objectApiName;
+   objectApiName='Project__c';
+   
     
-    modalPopUpToggleFlag = false;
-  
-      handlePopup(){
-          this.modalPopUpToggleFlag = true;
-      }
-  
-      handleSkip(){
-          this.modalPopUpToggleFlag = false;
-      }
-      customHideModalPopup(){
-        this.modalPopUpToggleFlag = false;
-      }
-
-  
-      @api myRecordId;
+    customShowModalPopup() {            
+        this.customFormModal = true;
+    }
+ 
+    customHideModalPopup() {    
+        
+        this.customFormModal = false;
+    }
+    
 
     get encryptedToken() {
         //use apex to get
@@ -42,17 +33,27 @@ export default class Popup extends LightningElement {
         const uploadedFiles = event.detail.Files;
         alert("No. of files uploaded : " + uploadedFiles.length);
     }
-
-     handleCancel(){
-        this.modalPopUpToggleFlag=false;
+   
+    
+    handleCancel(){
+        this.customFormModal=false;
     }
-
-      handleSave() {
-        this.template.querySelector('lightning-record-edit-form').submit(this.fields);
-    }
-    SaveAndNew() {
-        handleSave();
-        handleReset();
+    handleSave(){
+        this.template.querySelector('lightning-record-edit-form').submit();
+        this.customFormModal = false;
+        const evt = new ShowToastEvent({
+            title: 'Project Created',
+            message: 'New Project has been added Successfully',
+            variant: 'success',
+            mode: 'dismissable'
+        });
+        this.dispatchEvent(evt);
+      }
+      SaveAndNew() {
+       this.redirect = false;
+       this.template.querySelector('lightning-record-edit-form').submit(this.Fields);
+       this.resetpage = true;
+       this.handleReset();
     }
     
     handleReset(event) {
@@ -66,15 +67,5 @@ export default class Popup extends LightningElement {
            });
        }
     }
-    handleCodeBlockButtonClick() {
-        const inputRichText = this.template.querySelector('lightning-input-rich-text');
-        let format = inputRichText.getFormat();
-
-        // Set or unset code-block format based on format on current selection
-        if (format['code-block']) {
-            inputRichText.setFormat({ 'code-block': false });
-        } else {
-            inputRichText.setFormat({ 'code-block': true });
-        }
-    }
 }
+
