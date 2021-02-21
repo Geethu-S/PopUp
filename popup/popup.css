@@ -1,16 +1,14 @@
-h2{
-    border: 1px solid #e6ffff;
-    background-color:#e6ffff;
-    padding-top: 5px;
-    padding-right: 40px;
-    padding-bottom: 5px;
-    padding-left: 40px;
-   
-  }
-  .slds-modal__container{
-    width: 80% !important;
-    max-width: 80rem!important;
-      height:800px;
-  }
-
+.slds-p-horizontal_x-large{
+    padding-left:1px;
+}
+.slds-modal{
+    padding-bottom:40px ;
+    padding-right: 150px;
+}
+.slds-card{
+    padding-top:0px;
+}
+.slds-modal__content{
+    padding-top:0px;
+}
  
